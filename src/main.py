@@ -74,54 +74,25 @@ def generate_pages_recursive(basepath, dir_path_content, template_path, dest_dir
 """
 
 dir_path_static = "./static"
-dir_path_public = "./public"
+dir_path_public = "./docs"
 dir_path_content = "./content"
 template_path = "./template.html"
 
 
 def main():
-    # Delete 'public' directory if it exists
-    if os.path.exists("public"):
-        shutil.rmtree("public")
-
-    # Copy everything from 'static' to 'public'
-    shutil.copytree("static", "public")
-
-    """# Generate the main HTML page
-    generate_page("content/index.md", "template.html", "public/index.html")
-
-    # Blog pages
-    generate_page(
-        "content/blog/glorfindel/index.md",
-        "template.html",
-        "public/blog/glorfindel/index.html",
-    )
-
-    generate_page(
-        "content/blog/tom/index.md",
-        "template.html",
-        "public/blog/tom/index.html",
-    )
-
-    generate_page(
-        "content/blog/majesty/index.md",
-        "template.html",
-        "public/blog/majesty/index.html",
-    )
-
-    # Contact page
-    generate_page(
-        "content/contact/index.md",
-        "template.html",
-        "public/contact/index.html",
-    )
-    """
+    basepath = "/"
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
-    else:
-        basepath = "/"
 
-    generate_pages_recursive(basepath, "content", "template.html", "docs")
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
+
+    print("Copying static files to public directory...")
+    shutil.copytree(dir_path_static, dir_path_public)
+
+    print("Generating content...")
+    generate_pages_recursive(basepath, dir_path_content, template_path, dir_path_public)
 
 
 if __name__ == "__main__":
